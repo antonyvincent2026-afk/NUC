@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Northwestern Commencement Speakers (2006–2026) — 20 Years, 1 Stage</title>
+  <meta name="description" content="An interactive timeline of Northwestern University commencement speakers from 2006–2026, with filters, reactions, and media." />
+
+  <style>
+    :root{
+      --nu-purple:#4E2A84;
+      --nu-purple-2:#3b1f63;
+      --nu-lav:#E4D6F7;
+      --ink:#0f1020;
+      --muted:#5b5f76;
+      --card:#ffffff;
+      --bg1:#0b0812;
+      --bg2:#140f24;
+      --ring: rgba(228,214,247,.45);
+      --shadow: 0 14px 40px rgba(0,0,0,.22);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: #f7f5ff;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(78,42,132,.35), transparent 55%),
+                  radial-gradient(900px 700px at 80% 30%, rgba(228,214,247,.18), transparent 60%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    a{color: var(--nu-lav); text-decoration: none}
+    a:hover{text-decoration: underline}
+    .wrap{max-width:1100px; margin:0 auto; padding: 26px 18px 60px}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      border: 1px solid rgba(228,214,247,.18);
+      border-radius: 26px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.78)),
+        radial-gradient(900px 450px at 20% 30%, rgba(78,42,132,.65), transparent 60%),
+        radial-gradient(800px 480px at 80% 30%, rgba(228,214,247,.25), transparent 65%);
+      min-height: 360px;
+    }
+    .hero video{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:.33;
+      filter:saturate(1.05) contrast(1.05);
+      transform: scale(1.03);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 300px at 30% 18%, rgba(228,214,247,.20), transparent 55%);
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;
+      padding: 28px 26px 22px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+      align-items:end;
+    }
+    @media (max-width: 860px){
+      .hero-inner{grid-template-columns: 1fr}
+    }
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,214,247,.26);
+      background: rgba(78,42,132,.22);
+      backdrop-filter: blur(10px);
+      width: fit-content;
+      font-size: 13px;
+      color: #f1ebff;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:999px;
+      background: var(--nu-lav);
+      box-shadow: 0 0 0 5px rgba(228,214,247,.18);
+    }
+    h1{
+      margin: 12px 0 10px;
+      font-size: clamp(28px, 3.6vw, 44px);
+      letter-spacing: -0.02em;
+      line-height: 1.06;
+    }
+    .sub{
+      color: rgba(247,245,255,.82);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+
+    .hero-actions{
+      display:flex; flex-direction:column; gap:10px;
+      align-items: stretch;
+    }
+    .btn{
+      border: 1px solid rgba(228,214,247,.24);
+      background: rgba(20,15,36,.65);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 650;
+      letter-spacing:.01em;
+      box-shadow: 0 8px 24px rgba(0,0,0,.18);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(228,214,247,.42); background: rgba(78,42,132,.28)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(78,42,132,.92), rgba(59,31,99,.88));
+      border-color: rgba(228,214,247,.35);
+    }
+    .btn.small{padding:10px 12px; font-size: 14px}
+
+    /* QUOTE OVERLAY */
+    .quote-strip{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .pill{
+      border: 1px solid rgba(228,214,247,.24);
+      background: rgba(0,0,0,.30);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      color: rgba(247,245,255,.90);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: border-color .12s ease, transform .12s ease;
+    }
+    .pill:hover{border-color: rgba(228,214,247,.45); transform: translateY(-1px)}
+    .pill strong{color: #fff}
+
+    /* SECTION */
+    .section{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .panel{
+      border: 1px solid rgba(228,214,247,.16);
+      background: rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.18);
+    }
+
+    .panel h2{
+      margin: 2px 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .panel p{margin: 0; color: rgba(247,245,255,.84); line-height:1.55}
+
+    /* CONTROLS */
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .control-left{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .search{
+      display:flex; align-items:center; gap:8px;
+      border: 1px solid rgba(228,214,247,.18);
+      background: rgba(0,0,0,.22);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: min(420px, 100%);
+    }
+    .search input{
+      flex:1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+    }
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      padding: 9px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,214,247,.18);
+      background: rgba(0,0,0,.20);
+      cursor:pointer;
+      font-size: 13px;
+      color: rgba(247,245,255,.9);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
+    }
+    .chip:hover{transform: translateY(-1px); border-color: rgba(228,214,247,.40)}
+    .chip.active{
+      background: rgba(78,42,132,.35);
+      border-color: rgba(228,214,247,.50);
+    }
+
+    /* TIMELINE GRID */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 960px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 640px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      border: 1px solid rgba(228,214,247,.16);
+      background: rgba(0,0,0,.25);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.20);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      min-height: 118px;
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(228,214,247,.38); background: rgba(78,42,132,.18)}
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(520px 160px at 20% 20%, rgba(228,214,247,.10), transparent 55%),
+                  radial-gradient(520px 220px at 80% 30%, rgba(78,42,132,.20), transparent 55%);
+      pointer-events:none;
+    }
+    .card-inner{position:relative}
+    .year{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .tag{
+      margin-left:auto;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,214,247,.20);
+      background: rgba(0,0,0,.26);
+      color: rgba(247,245,255,.86);
+      white-space:nowrap;
+    }
+    .speaker{
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 720;
+      line-height: 1.25;
+    }
+    .meta{
+      margin-top: 8px;
+      color: rgba(247,245,255,.78);
+      font-size: 13px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .badge{
+      border: 1px solid rgba(228,214,247,.18);
+      background: rgba(78,42,132,.16);
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* CAROUSEL */
+    .carousel{
+      display:flex;
+      gap: 10px;
+      overflow:auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 8px;
+    }
+    .carousel::-webkit-scrollbar{height:10px}
+    .carousel::-webkit-scrollbar-thumb{
+      background: rgba(228,214,247,.18);
+      border-radius: 999px;
+    }
+    .shot{
+      scroll-snap-align: start;
+      flex: 0 0 min(320px, 82vw);
+      height: 190px;
+      border-radius: 18px;
+      border: 1px solid rgba(228,214,247,.16);
+      overflow:hidden;
+      position:relative;
+      background:
+        radial-gradient(700px 220px at 20% 20%, rgba(78,42,132,.55), transparent 55%),
+        radial-gradient(600px 260px at 80% 20%, rgba(228,214,247,.22), transparent 60%),
+        rgba(0,0,0,.25);
+    }
+    .shot img{width:100%; height:100%; object-fit:cover; opacity:.75; filter: saturate(1.05) contrast(1.02)}
+    .shot .caption{
+      position:absolute; left:12px; right:12px; bottom:10px;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.42);
+      border: 1px solid rgba(228,214,247,.18);
+      backdrop-filter: blur(10px);
+    }
+
+    /* REACTION + METER */
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 860px){ .two-col{grid-template-columns:1fr} }
+
+    .reaction-card{
+      border: 1px solid rgba(228,214,247,.16);
+      background: rgba(0,0,0,.22);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .reaction-card h3{margin:0 0 8px; font-size: 15px}
+    .q{
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(228,214,247,.16);
+      background: rgba(78,42,132,.14);
+      color: rgba(247,245,255,.90);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .meter{
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .bar{
+      flex:1;
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(228,214,247,.20);
+      background: rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .fill{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(228,214,247,.6), rgba(78,42,132,.95));
+      border-radius: 999px;
+      transition: width .10s linear;
+    }
+    .db{
+      font-weight: 800;
+      min-width: 68px;
+      text-align:right;
+      color: rgba(247,245,255,.92);
+    }
+    .hint{
+      font-size: 12px;
+      color: rgba(247,245,255,.72);
+      margin-top: 8px;
+      line-height:1.45;
+    }
+
+    /* MODAL */
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 50;
+    }
+    .modal{
+      width: min(820px, 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(228,214,247,.20);
+      background: rgba(14,10,24,.92);
+      box-shadow: 0 24px 60px rgba(0,0,0,.40);
+      overflow:hidden;
+      position:relative;
+    }
+    .modal-top{
+      padding: 16px 16px 10px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(228,214,247,.14);
+      background: radial-gradient(900px 260px at 20% 10%, rgba(78,42,132,.42), transparent 60%);
+    }
+    .modal h3{margin:0; font-size: 18px}
+    .modal .close{
+      border: 1px solid rgba(228,214,247,.18);
+      background: rgba(0,0,0,.22);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 750;
+    }
+    .modal-body{
+      padding: 14px 16px 16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 860px){ .modal-body{grid-template-columns:1fr} }
+    .modal-box{
+      border: 1px solid rgba(228,214,247,.16);
+      background: rgba(0,0,0,.22);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .modal-box h4{margin:0 0 8px; font-size: 14px; color: rgba(247,245,255,.92)}
+    .modal-box p{margin:0; color: rgba(247,245,255,.82); line-height:1.55}
+    .modal-box ul{margin: 8px 0 0; padding-left: 18px; color: rgba(247,245,255,.82); line-height:1.5}
+    .modal-box li{margin: 6px 0}
+    .smallnote{font-size: 12px; color: rgba(247,245,255,.68); margin-top: 10px}
+
+    footer{
+      margin-top: 26px;
+      color: rgba(247,245,255,.70);
+      font-size: 12px;
+      line-height:1.5;
+      text-align:center;
+    }
+    code.inline{
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(228,214,247,.14);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="hero" id="top">
+      <!-- Optional: replace hero.mp4 with your own short background clip -->
+      <video autoplay muted loop playsinline>
+        <source src="hero.mp4" type="video/mp4" />
+      </video>
+
+      <div class="hero-inner">
+        <div>
+          <div class="kicker"><span class="dot"></span> 20 years of commencement speakers • 1 interactive timeline</div>
+          <h1>Who gets the mic at Northwestern?</h1>
+          <p class="sub">
+            Tap through <strong>2006–2026</strong>: comedians, journalists, artists, activists, politicians —
+            and the moments they arrived. Filter by school, open any year for quick context, and add student reactions.
+          </p>
+
+          <div class="quote-strip" id="quoteStrip">
+            <div class="pill" data-quote="“You are America’s future business leaders, and civic leaders…” — Barack Obama (2006)">
+              <strong>Quote overlay</strong> • 2006
+            </div>
+            <div class="pill" data-quote="“Kindness isn’t a weakness. It is a very potent strength.” — Steve Carell (2025)">
+              <strong>Quote overlay</strong> • 2025
+            </div>
+            <div class="pill" data-quote="“It’s a privilege to celebrate a graduating class…” — Sarah Jessica Parker (2026)">
+              <strong>Quote overlay</strong> • 2026
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn primary" id="jumpTimeline">Start the timeline ↓</button>
+
+          <!-- Optional audio toggle: add a file named crowd.mp3 to the same folder -->
+          <button class="btn" id="toggleCrowd">Toggle crowd audio (optional)</button>
+          <audio id="crowdAudio" src="crowd.mp3" preload="none"></audio>
+
+          <button class="btn small" id="openHow">How this was reported</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="panel">
+        <h2>Photo carousel (drop in your own shots)</h2>
+        <p>Use these slots for United Center / campus / seniors / screen-grabs of speakers. Replace image URLs anytime.</p>
+        <div class="carousel" style="margin-top:12px">
+          <div class="shot">
+            <img alt="Commencement vibes" src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1200&q=70" />
+            <div class="caption">A stadium, a stage, a thousand camera rolls.</div>
+          </div>
+          <div class="shot">
+            <img alt="Graduation cap" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=70" />
+            <div class="caption">The walk, the cheers, the “we did it.”</div>
+          </div>
+          <div class="shot">
+            <img alt="Purple lights" src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=1200&q=70" />
+            <div class="caption">Northwestern purple, but make it cinematic.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="timeline">
+        <div class="controls">
+          <div class="control-left">
+            <div class="search">
+              <span aria-hidden="true">🔎</span>
+              <input id="searchInput" placeholder="Search a speaker (e.g., Colbert, Wilkerson, Obama)…" />
+            </div>
+            <div class="filters" id="filters"></div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <span style="font-size:12px; color: rgba(247,245,255,.72)">Tip: click any card to open details</span>
+            <button class="btn small" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="grid" id="cards"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Reaction story: what do seniors think?</h2>
+        <p>
+          Add 6–10 short quotes. Keep them punchy (1–2 sentences). Pair with a mic meter for a playful “crowd energy” demo.
+        </p>
+
+        <div class="two-col">
+          <div class="reaction-card">
+            <h3>Quick interview prompts</h3>
+            <div class="q">“What’s your first reaction to this year’s speaker? One word, then one sentence.”</div>
+            <div class="q">“Did this speaker change how excited you feel about commencement?”</div>
+            <div class="q">“Which past speaker would you swap in (if you could)?”</div>
+            <div class="q">“What theme do you hope the speech hits — and what are you tired of hearing?”</div>
+
+            <div class="hint">Reporting tip: note school/year, and ask for permission if you’re recording audio.</div>
+          </div>
+
+          <div class="reaction-card">
+            <h3>“Crowd energy” meter (mic-based)</h3>
+            <button class="btn small" id="micBtn">Enable microphone meter</button>
+
+            <div class="meter">
+              <div class="bar"><div class="fill" id="fill"></div></div>
+              <div class="db" id="db">— dB</div>
+            </div>
+
+            <div class="hint">
+              This is a *demo* meter for your interactive page (it measures microphone loudness in real time).
+              For real crowd data, you’d want consistent distance + environment notes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Built for a Medill-style interactive: timeline + context + reactions.
+      Replace media files (<code class="inline">hero.mp4</code>, <code class="inline">crowd.mp3</code>) and swap in your own reporting.
+    </footer>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="backdrop" role="dialog" aria-modal="true" aria-label="Speaker details">
+    <div class="modal">
+      <div class="modal-top">
+        <div>
+          <h3 id="mTitle">Year — Speaker</h3>
+          <div id="mTags" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;"></div>
+        </div>
+        <button class="close" id="closeModal">Close</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-box">
+          <h4>Why it mattered</h4>
+          <p id="mWhy"></p>
+          <div class="smallnote" id="mNote"></div>
+        </div>
+
+        <div class="modal-box">
+          <h4>Sources & media</h4>
+          <ul id="mLinks"></ul>
+          <div class="smallnote">Tip: add a YouTube link, Northwestern News link, or Daily archive.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data: 2006–2026 (you can edit tags/schools as you refine reporting)
+    const data = [
+      { year: 2006, speaker: "Barack Obama", schoolTag: "University-wide", type: "Politics", why: "Before the presidency: then-U.S. Senator of Illinois speaking on public responsibility.", links: [
+        { label: "Speech video (archival)", url: "https://www.youtube.com/watch?v=2MhMRYQ9Ez8" }
+      ]},
+      { year: 2007, speaker: "Julia Louis-Dreyfus", schoolTag: "Communication", type: "Arts", why: "A celebratory alumni moment: pop-culture icon + Northwestern grad address.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2007/06/20/archive-manual/wildcats-bound-for-greatness/" }
+      ]},
+      { year: 2008, speaker: "Richard M. Daley", schoolTag: "University-wide", type: "Politics", why: "Chicago power and local civic identity on the graduation stage.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2008/06/25/archive-manual/150th-commencement-new-graduates-encouraged-to-pursue-dreams-with-vigor/" }
+      ]},
+      { year: 2009, speaker: "Wynton Marsalis", schoolTag: "Bienen", type: "Arts", why: "Music legend spotlighting creativity, discipline, and craft.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2009/03/11/archive-manual/jazz-legend-wynton-marsalis-to-be-june-commencement-speaker/" }
+      ]},
+      { year: 2010, speaker: "Michael Wilbon", schoolTag: "Medill", type: "Media", why: "Sports media voice + Medill connection — storytelling, ethics, public attention.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2010/05/13/campus/academic/michael-wilbon-to-replace-christiane-amanpour-as-commencement-speaker/" }
+      ]},
+      { year: 2011, speaker: "Stephen Colbert", schoolTag: "Communication", type: "Media", why: "Comedy + cultural critique: a peak ‘speaker-you-quote-on-Instagram’ year.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2011/06/22/uncategorized/stephen-colbert-addresses-class-of-2011-at-nus-153rd-commencement/" }
+      ]},
+      { year: 2012, speaker: "Dr. Paul Farmer", schoolTag: "University-wide", type: "Impact", why: "Global health + service: commencement framed around moral urgency.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2012/06/25/uncategorized/enduring-the-heat-to-graduate/" }
+      ]},
+      { year: 2013, speaker: "Mikhail Baryshnikov", schoolTag: "Communication", type: "Arts", why: "A world-class performer and creative leader — ambition, reinvention, craft.", links: [
+        { label: "Daily Northwestern archive", url: "https://dailynorthwestern.com/2013/06/22/campus/mikhail-baryshnikov-northwestern-commencement-address/" }
+      ]},
+      { year: 2014, speaker: "Riccardo Muti", schoolTag: "Bienen", type: "Arts", why: "Music leadership and excellence—Northwestern’s arts identity on display.", links: [
+        { label: "Daily Northwestern (context)", url: "https://dailynorthwestern.com/2014/04/07/opinion/gandlmayr-riccardo-muti-deserves-a-warmer-welcome/" }
+      ]},
+      { year: 2015, speaker: "Virginia Rometty", schoolTag: "McCormick/Kellogg", type: "Business", why: "A tech/business leadership year — careers, reinvention, and ambition.", links: [
+        { label: "Northwestern IT (archival page)", url: "https://mti.it.northwestern.edu/2015/06/northwesterns-2015-commencement/" }
+      ]},
+      { year: 2016, speaker: "Seth Meyers", schoolTag: "Communication", type: "Media", why: "Late-night + alumni energy: humor as a graduation language.", links: [
+        { label: "Daily Northwestern announcement", url: "https://dailynorthwestern.com/2016/02/23/campus/late-night-tv-star-northwestern-alum-seth-meyers-to-speak-at-2016-commencement/" }
+      ]},
+      { year: 2017, speaker: "Billie Jean King", schoolTag: "University-wide", type: "Impact", why: "Equality advocacy meets sports legacy—values-forward stage moment.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2017/february/equality-advocate-and-sports-icon-to-address-class-of-2017" }
+      ]},
+      { year: 2018, speaker: "Renée Fleming", schoolTag: "Bienen", type: "Arts", why: "A major arts voice and public cultural figure — excellence + creativity.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2018/june/commencement" }
+      ]},
+      { year: 2019, speaker: "Lonnie G. Bunch III", schoolTag: "University-wide", type: "Impact", why: "History, institutions, and public memory—speaker tied to major cultural leadership.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2019/06/commencement-speaker-lonnie-bunch-find-your-own-good-fight" }
+      ]},
+      { year: 2020, speaker: "Lori Lightfoot", schoolTag: "University-wide", type: "Politics", why: "Pandemic-era virtual commencement with a Chicago civic figure.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2020/04/commencement-virtual" }
+      ]},
+      { year: 2021, speaker: "Gwynne Shotwell", schoolTag: "McCormick", type: "STEM", why: "Space + engineering leadership; aspirational tech future framing.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2021/06/commencement-gwynne-shotwell" }
+      ]},
+      { year: 2022, speaker: "Isabel Wilkerson", schoolTag: "Medill", type: "Media", why: "Ideas, history, and narrative power—major nonfiction voice.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2022/03/isabel-wilkerson-named-commencement-speaker" }
+      ]},
+      { year: 2023, speaker: "J.B. Pritzker", schoolTag: "University-wide", type: "Politics", why: "Illinois politics meets campus life; high-profile local-state moment.", links: [
+        { label: "Northwestern Graduation site", url: "https://www.northwestern.edu/graduation/events/2023-commencement-speaker.html" }
+      ]},
+      { year: 2024, speaker: "Kathryn Hahn", schoolTag: "Communication", type: "Arts", why: "A pop-culture-heavy pick with alumni pride and big shareability.", links: [
+        { label: "Northwestern News", url: "https://news.northwestern.edu/stories/2024/03/kathryn-hahn-named-northwestern-commencement-speaker" }
+      ]},
+      { year: 2025, speaker: "Steve Carell", schoolTag: "Communication", type: "Media", why: "Comedic star power + ‘kindness’ theme; high crowd-energy year.", links: [
+        { label: "Northwestern News announcement", url: "https://news.northwestern.edu/stories/2025/02/actor-steve-carell-will-be-northwestern-commencement-speaker" },
+        { label: "C-SPAN video", url: "https://www.c-span.org/program/public-affairs-event/steve-carell-delivers-northwestern-university-commencement-address/661302" }
+      ]},
+      { year: 2026, speaker: "Sarah Jessica Parker", schoolTag: "Communication", type: "Arts", why: "A celebrity announcement built for Gen Z discourse: instantly recognizable + instantly debatable.", links: [
+        { label: "Northwestern News announcement", url: "https://news.northwestern.edu/stories/2026/02/sarah-jessica-parker-to-address-class-of-2026-commencement" }
+      ]}
+    ];
+
+    const SCHOOL_FILTERS = [
+      "All",
+      "University-wide",
+      "Medill",
+      "Communication",
+      "Bienen",
+      "McCormick",
+      "McCormick/Kellogg"
+    ];
+
+    const els = {
+      cards: document.getElementById("cards"),
+      filters: document.getElementById("filters"),
+      searchInput: document.getElementById("searchInput"),
+      resetBtn: document.getElementById("resetBtn"),
+      jumpTimeline: document.getElementById("jumpTimeline"),
+      toggleCrowd: document.getElementById("toggleCrowd"),
+      crowdAudio: document.getElementById("crowdAudio"),
+      quoteStrip: document.getElementById("quoteStrip"),
+      openHow: document.getElementById("openHow"),
+      backdrop: document.getElementById("backdrop"),
+      closeModal: document.getElementById("closeModal"),
+      mTitle: document.getElementById("mTitle"),
+      mTags: document.getElementById("mTags"),
+      mWhy: document.getElementById("mWhy"),
+      mNote: document.getElementById("mNote"),
+      mLinks: document.getElementById("mLinks"),
+      micBtn: document.getElementById("micBtn"),
+      fill: document.getElementById("fill"),
+      db: document.getElementById("db")
+    };
+
+    let activeFilter = "All";
+    let searchTerm = "";
+
+    function pill(text){
+      const span = document.createElement("span");
+      span.className = "badge";
+      span.textContent = text;
+      return span;
+    }
+
+    function renderFilters(){
+      els.filters.innerHTML = "";
+      SCHOOL_FILTERS.forEach(f => {
+        const chip = document.createElement("div");
+        chip.className = "chip" + (f === activeFilter ? " active" : "");
+        chip.textContent = f;
+        chip.onclick = () => {
+          activeFilter = f;
+          renderFilters();
+          renderCards();
+        };
+        els.filters.appendChild(chip);
+      });
+    }
+
+    function matches(item){
+      const bySchool = activeFilter === "All" || item.schoolTag === activeFilter;
+      const s = (searchTerm || "").trim().toLowerCase();
+      if(!s) return bySchool;
+      const hay = (item.speaker + " " + item.year + " " + item.type + " " + item.schoolTag).toLowerCase();
+      return bySchool && hay.includes(s);
+    }
+
+    function renderCards(){
+      els.cards.innerHTML = "";
+      const items = data
+        .slice()
+        .sort((a,b)=> b.year - a.year)
+        .filter(matches);
+
+      if(items.length === 0){
+        const div = document.createElement("div");
+        div.className = "panel";
+        div.innerHTML = "<h2>No matches</h2><p>Try a different search term or reset filters.</p>";
+        els.cards.appendChild(div);
+        return;
+      }
+
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.setAttribute("role","button");
+        card.setAttribute("aria-label", `Open details for ${item.year} ${item.speaker}`);
+
+        card.onclick = () => openModal(item);
+        card.onkeydown = (e)=> { if(e.key === "Enter" || e.key === " ") openModal(item); };
+
+        const inner = document.createElement("div");
+        inner.className = "card-inner";
+
+        const top = document.createElement("div");
+        top.className = "year";
+        top.innerHTML = `<span>${item.year}</span>`;
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = item.schoolTag;
+
+        top.appendChild(tag);
+
+        const speaker = document.createElement("div");
+        speaker.className = "speaker";
+        speaker.textContent = item.speaker;
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.appendChild(pill(item.type));
+        if(item.links?.length) meta.appendChild(pill(item.links.length + " link" + (item.links.length>1?"s":"")));
+
+        inner.appendChild(top);
+        inner.appendChild(speaker);
+        inner.appendChild(meta);
+        card.appendChild(inner);
+        els.cards.appendChild(card);
+      });
+    }
+
+    function openModal(item){
+      els.mTitle.textContent = `${item.year} — ${item.speaker}`;
+      els.mTags.innerHTML = "";
+      els.mTags.appendChild(pill(item.schoolTag));
+      els.mTags.appendChild(pill(item.type));
+
+      els.mWhy.textContent = item.why || "Add context from your reporting.";
+      els.mNote.textContent = "Reporting idea: add 1–2 lines from a senior interview reacting to this speaker.";
+
+      els.mLinks.innerHTML = "";
+      (item.links || []).forEach(l => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = l.url;
+        a.target = "_blank";
+        a.rel = "noreferrer";
+        a.textContent = l.label;
+        li.appendChild(a);
+        els.mLinks.appendChild(li);
+      });
+
+      if((item.links||[]).length === 0){
+        const li = document.createElement("li");
+        li.textContent = "Add a source link here.";
+        els.mLinks.appendChild(li);
+      }
+
+      els.backdrop.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(){
+      els.backdrop.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    // Hero actions
+    els.jumpTimeline.onclick = () => {
+      document.getElementById("timeline").scrollIntoView({behavior:"smooth", block:"start"});
+    };
+
+    // Optional crowd audio toggle (requires crowd.mp3 in folder)
+    els.toggleCrowd.onclick = async () => {
+      try{
+        if(els.crowdAudio.paused){
+          await els.crowdAudio.play();
+          els.toggleCrowd.textContent = "Pause crowd audio";
+        } else {
+          els.crowdAudio.pause();
+          els.toggleCrowd.textContent = "Toggle crowd audio (optional)";
+        }
+      } catch (e){
+        alert("Add a file named crowd.mp3 next to index.html to use this toggle.");
+      }
+    };
+
+    // Quote overlay pills
+    els.quoteStrip.addEventListener("click", (e) => {
+      const pill = e.target.closest(".pill");
+      if(!pill) return;
+      const q = pill.getAttribute("data-quote") || "";
+      // quick “overlay” effect via modal
+      openModal({
+        year: "Quote",
+        speaker: "Overlay",
+        schoolTag: "Tap-to-share",
+        type: "Moment",
+        why: q,
+        links: []
+      });
+      els.mNote.textContent = "Design idea: animate this quote over the hero video, then fade.";
+    });
+
+    // “How this was reported” info
+    els.openHow.onclick = () => {
+      openModal({
+        year: "Method",
+        speaker: "How this page was built",
+        schoolTag: "Sources + reporting",
+        type: "Behind the scenes",
+        why:
+`This interactive combines (1) primary sources (Northwestern News / graduation pages), (2) Daily Northwestern archive coverage for older years, and (3) original reporting (senior interviews + optional audio).\n\nFor your final project: add 6–10 student reactions, 2–3 short clips or links to speeches, and a short paragraph explaining why the newest announcement matters now.`,
+        links: [
+          { label: "Northwestern News Center", url: "https://news.northwestern.edu/" },
+          { label: "Daily Northwestern archives", url: "https://dailynorthwestern.com/" }
+        ]
+      });
+      els.mNote.textContent = "Add your names + date + reporting credits here.";
+    };
+
+    // Close modal interactions
+    els.closeModal.onclick = closeModal;
+    els.backdrop.addEventListener("click", (e) => {
+      if(e.target === els.backdrop) closeModal();
+    });
+    window.addEventListener("keydown", (e)=> {
+      if(e.key === "Escape" && els.backdrop.style.display === "flex") closeModal();
+    });
+
+    // Search / reset
+    els.searchInput.addEventListener("input", (e)=> {
+      searchTerm = e.target.value;
+      renderCards();
+    });
+    els.resetBtn.onclick = () => {
+      activeFilter = "All";
+      searchTerm = "";
+      els.searchInput.value = "";
+      renderFilters();
+      renderCards();
+    };
+
+    // Mic meter (Web Audio API)
+    let audioCtx, analyser, micStream, rafId;
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    async function startMicMeter(){
+      if(rafId) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      const source = audioCtx.createMediaStreamSource(micStream);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      source.connect(analyser);
+
+      const dataArr = new Uint8Array(analyser.fftSize);
+
+      const tick = () => {
+        analyser.getByteTimeDomainData(dataArr);
+        // RMS amplitude
+        let sum = 0;
+        for(let i=0;i<dataArr.length;i++){
+          const v = (dataArr[i] - 128) / 128;
+          sum += v*v;
+        }
+        const rms = Math.sqrt(sum / dataArr.length);
+
+        // Convert to a "dB-like" value for UI (not calibrated SPL)
+        const dbLike = 20 * Math.log10(rms + 1e-6) + 100; // shift to positive-ish
+        const pct = clamp((dbLike - 40) / 60, 0, 1) * 100;
+
+        els.fill.style.width = pct.toFixed(1) + "%";
+        els.db.textContent = Math.round(dbLike) + " dB";
+
+        rafId = requestAnimationFrame(tick);
+      };
+      tick();
+      els.micBtn.textContent = "Mic meter running";
+      els.micBtn.disabled = true;
+    }
+
+    els.micBtn.onclick = async () => {
+      try{
+        await startMicMeter();
+      } catch (e){
+        alert("Microphone permission was blocked. Enable it in your browser settings to use the meter.");
+      }
+    };
+
+    // Init
+    renderFilters();
+    renderCards();
+  </script>
+</body>
+</html>
